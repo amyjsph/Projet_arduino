@@ -37,9 +37,11 @@ void setup()
   delay(500);  // wait chip initialization is complete
 
   mp3_command(CMD_SEL_DEV, DEV_TF);  // select the TF card
-  delay(200);                        // wait for 200ms
+  delay(200);    
 
-  mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00102);       // Play mp3
+  mp3_command(CMD_SET_VOLUME,30); 
+
+  //mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00102);       // Play mp3
   // mp3_command(CMD_PAUSE, 0x0000);      // Pause mp3
   //mp3_command(CMD_PLAY_NEXT, 0x0000);  // Play next mp3
   //mp3_command(CMD_PLAY_PREV, 0x0000);  // Play previous mp3
@@ -59,15 +61,15 @@ void loop()
     Serial.print("\t");
     Serial.println(total2);
 
-    if(total1 > 1000 and total2 > 1000) {
+    if(total1 > 500 and total2 > 500) {
       selected_sound = 0;
       mp3_command(CMD_PAUSE, 0x0000);
-    } else if(total1 > 1000) {
+    } else if(total1 > 500) {
       if(selected_sound != 1) {
         selected_sound = 1;
         mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00101);
       }
-    } else if(total2 > 1000) {
+    } else if(total2 > 500) {
       if(selected_sound != 2) {
         selected_sound = 2;
         mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00102);
