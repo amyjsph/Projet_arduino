@@ -39,7 +39,7 @@ void setup()
   mp3_command(CMD_SEL_DEV, DEV_TF);  // select the TF card
   delay(200);    
 
-  mp3_command(CMD_SET_VOLUME,30); 
+  mp3_command(CMD_SET_VOLUME,50); 
 
   //mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00102);       // Play mp3
   // mp3_command(CMD_PAUSE, 0x0000);      // Pause mp3
