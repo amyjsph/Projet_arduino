@@ -2,7 +2,6 @@
 #include <SoftwareSerial.h>
 
 #define COMMON_PIN 53
-#define START_PIN 36
 #define NB_PIN 16
 
 #define CMD_PLAY_NEXT 0x01
@@ -24,7 +23,10 @@
 #define CS CapacitiveSensor
 
 SoftwareSerial mp3(ARDUINO_RX, ARDUINO_TX);
-CapacitiveSensor capList[16] = {CS(53, 51), CS(53, 50), CS(53, 49), CS(53, 48), CS(53, 47), CS(53, 46), CS(53, 45), CS(53, 44), CS(53, 43), CS(53, 42), CS(53, 41), CS(53, 40), CS(53, 39),CS(53, 38),CS(53, 37),CS(53, 36)};
+CapacitiveSensor capList[16] = {CS(53, 51), CS(53, 50), CS(53, 49), CS(53, 48), 
+CS(53, 47), CS(53, 46), CS(53, 45), CS(53, 44), CS(53, 43), CS(53, 42), 
+CS(53, 41), CS(53, 40), CS(53, 39),CS(53, 38),CS(53, 37),CS(53, 36)};
+
 int capacitance[16];
 int currentKey = -1;
 bool isHolding = false;
