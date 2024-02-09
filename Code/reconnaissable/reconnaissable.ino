@@ -1,5 +1,6 @@
 #include <CapacitiveSensor.h>
 #include <SoftwareSerial.h>
+#include <Adafruit_NeoPixel.h>
 
 #define COMMON_PIN 53
 #define NB_PIN 16
@@ -30,39 +31,71 @@ CS(53, 41), CS(53, 40), CS(53, 39),CS(53, 38),CS(53, 37),CS(53, 36)};
 int capacitance[16];
 int currentKey = -1;
 bool isHolding = false;
-void setup()                    
+
+// Led part
+ 
+#define NUMPIXELS 44
+#define PIN 31
+Adafruit_NeoPixel strip(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+int b = random(NB_PIN/2);
+
+void setup()
 {
   Serial.begin(9600);
   mp3.begin(9600);
-  delay(500);  // wait chip initialization is complete
+  delay(500);
 
   mp3_command(CMD_SEL_DEV, DEV_TF);  // select the TF card
-  delay(200);    
+  delay(200);
 
-  mp3_command(CMD_SET_VOLUME,50);
+  mp3_command(CMD_SET_VOLUME,1000);
+
   //mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00102);       // Play mp3
   // mp3_command(CMD_PAUSE, 0x0000);      // Pause mp3
   //mp3_command(CMD_PLAY_NEXT, 0x0000);  // Play next mp3
   //mp3_command(CMD_PLAY_PREV, 0x0000);  // Play previous mp3
-  //mp3_command(CMD_SET_VOLUME, 30);     // Change volume to 30
+
+  strip.begin();
+  turnOffLed();
+  strip.setPixelColor(b, 0, 0, 255);
+  strip.show();
 }
 
 void loop()                    
 {
+  for(int i = 0; i < NB_PIN; i++) {
     bool a = false;
-    for(int i = 0; i<NB_PIN; i++) {
-      capacitance[i] = capList[i].capacitiveSensor(30);
-      Serial.print(capacitance[i]);
-      Serial.print(" / ");
-      if(capacitance[i] > 500) {
-        if(!isHolding) {
-          mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00100 + (i+1));
+    capacitance[i] = capList[i].capacitiveSensor(30);
+    // Serial.print(capacitance[i]);
+    // Serial.print(" : ");
+    
+    if(capacitance[i] > 250) {
+      if(!isHolding) {
+        if(i != b) {
+          for(int j = 0; j < 3; j++) {
+            //  turnRedLed();
+            //  delay(100);
+             turnOffLed();
+             delay(100);
+          }
+          strip.setPixelColor(b*3, 0, 0, 255);
+          strip.show();
+          Serial.print(b);
+          Serial.print(" / ");
+          Serial.println(capacitance[i]);
+          break;
         }
-        a = true;
+        mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00100 + (i+1));
+        turnOffLed();
+        b = random(NB_PIN / 2);
+        strip.setPixelColor(i*3, 0, 0, 255);
+        strip.show();
         break;
       }
+      a = true;
     }
-    Serial.println("");
+    // Serial.println("");
     isHolding = a;
     // long start = millis();
     // long total2 =  second.capacitiveSensor(30);
@@ -89,6 +122,7 @@ void loop()
     //   }
     // }
     // delay(10);                             // arbitrary delay to limit data to serial port 
+  }
 }
 
 void mp3_command(int8_t command, int16_t dat) {
@@ -104,4 +138,18 @@ void mp3_command(int8_t command, int16_t dat) {
   for (uint8_t i = 0; i < 8; i++) {
     mp3.write(frame[i]);
   }
+}
+
+void turnOffLed() {
+  for(int i = 0; i < NUMPIXELS; i++) {
+    strip.setPixelColor(i, 0, 0, 0);
+  }
+  strip.show();
+}
+
+void turnRedLed() {
+  for(int i = 0; i < NUMPIXELS; i++) {
+    strip.setPixelColor(i, 255, 0, 0);
+  }
+  strip.show();
 }
