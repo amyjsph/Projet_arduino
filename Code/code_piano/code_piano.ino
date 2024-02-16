@@ -1,6 +1,6 @@
 #include <CapacitiveSensor.h>
 #include <SoftwareSerial.h>
-#include <Adafruit_NeoPixel.h>
+
 
 #define COMMON_PIN 53
 #define NB_PIN 16
@@ -15,6 +15,7 @@
 #define CMD_PAUSE 0x0E
 #define CMD_SINGLE_CYCLE 0x19
 #define CMD_PLAY_WITH_FOLDER 0x0F
+
 #define DEV_TF 0x02
 #define SINGLE_CYCLE_ON 0x00
 #define SINGLE_CYCLE_OFF 0x01
@@ -32,13 +33,9 @@ int capacitance[16];
 int currentKey = -1;
 bool isHolding = false;
 
-// Led part
- 
-#define NUMPIXELS 44
-#define PIN 33
-Adafruit_NeoPixel strip(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-int b = random(NB_PIN/2);
+
+
 
 void setup()
 {
@@ -56,73 +53,28 @@ void setup()
   //mp3_command(CMD_PLAY_NEXT, 0x0000);  // Play next mp3
   //mp3_command(CMD_PLAY_PREV, 0x0000);  // Play previous mp3
   
-  strip.begin();
-  turnOffLed();
-  strip.setPixelColor(b, 0, 0, 255);
-  strip.show();
+
 }
 
 void loop()                    
 {
-  for(int i = 0; i < NB_PIN; i++) {
-    bool a = false;
+  bool a = false;
+  for(int i= 0; i<NB_PIN; i++) {
     capacitance[i] = capList[i].capacitiveSensor(30);
-    // Serial.print(capacitance[i]);
-    // Serial.print(" : ");
+    Serial.print(capacitance[i]);
+    Serial.print(" / ");
     
     if(capacitance[i] > 250) {
       if(!isHolding) {
-        if(i != b) {
-          for(int j = 0; j < 3; j++) {
-            //  turnRedLed();
-            //  delay(100);
-             turnOffLed();
-             delay(100);
-          }
-          strip.setPixelColor(b*3, 0, 0, 255);
-          strip.show();
-          Serial.print(b);
-          Serial.print(" / ");
-          Serial.println(capacitance[i]);
-          break;
-        }
         mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00100 + (i+1));
-        turnOffLed();
-        b = random(NB_PIN / 2);
-        strip.setPixelColor(i*3, 0, 0, 255);
-        strip.show();
-        break;
       }
-      a = true;
+      a=true;
+      break;
     }
-    // Serial.println("");
-    isHolding = a;
-    // long start = millis();
-    // long total2 =  second.capacitiveSensor(30);
-
-    // Serial.print(millis() - start);        // check on performance in milliseconds
-    // Serial.print("\t");                    // tab character for debug windown spacing
-
-                     // print sensor output 1
-    // Serial.print("\t");
-    // Serial.println(total2);
-
-    // if(total1 > 500 and total2 > 500) {
-    //   selected_sound = 0;
-    //   mp3_command(CMD_PAUSE, 0x0000);
-    // } else if(total1 > 500) {
-    //   if(selected_sound != 1) {
-    //     selected_sound = 1;
-    //     mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00101);
-    //   }
-    // } else if(total2 > 500) {
-    //   if(selected_sound != 2) {
-    //     selected_sound = 2;
-    //     mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00102);
-    //   }
-    // }
-    // delay(10);                             // arbitrary delay to limit data to serial port 
   }
+  Serial.println("");
+  isHolding = a;
+   
 }
 
 void mp3_command(int8_t command, int16_t dat) {
