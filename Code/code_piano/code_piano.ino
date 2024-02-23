@@ -92,16 +92,4 @@ void mp3_command(int8_t command, int16_t dat) {
   }
 }
 
-void turnOffLed() {
-  for(int i = 0; i < NUMPIXELS; i++) {
-    strip.setPixelColor(i, 0, 0, 0);
-  }
-  strip.show();
-}
 
-void turnRedLed() {
-  for(int i = 0; i < NUMPIXELS; i++) {
-    strip.setPixelColor(i, 255, 0, 0);
-  }
-  strip.show();
-}
