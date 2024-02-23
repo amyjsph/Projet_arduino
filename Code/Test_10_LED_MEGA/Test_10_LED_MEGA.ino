@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
  
-#define NUMPIXELS 44
-#define PIN 31
+#define NUMPIXELS 50
+#define PIN 10
 Adafruit_NeoPixel strip(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 int j = 0;
 
