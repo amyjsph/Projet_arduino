@@ -35,7 +35,7 @@ bool isHolding = false;
 // Led part
  
 #define NUMPIXELS 44
-#define PIN 33
+#define PIN 10
 Adafruit_NeoPixel strip(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
 int b = random(NB_PIN/2);
