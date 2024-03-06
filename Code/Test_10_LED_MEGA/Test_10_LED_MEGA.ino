@@ -13,9 +13,9 @@ void setup() {
  
 void loop() {
     for(int i = 0; i < j; i++ ) { // On fait une boucle pour définir la couleur de chaque led
-        strip.setPixelColor(i, 0, 0, 255);       
+        strip.setPixelColor(i, 255, 0, 150);       
     }
     j++;
     strip.show();
-    delay(500);
+    delay(100);
 }

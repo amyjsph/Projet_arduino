@@ -64,7 +64,7 @@ void loop()
     Serial.print(capacitance[i]);
     Serial.print(" / ");
     
-    if(capacitance[i] > 250) {
+    if(capacitance[i] > 200) {
       if(!isHolding) {
         mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00100 + (i+1));
       }
