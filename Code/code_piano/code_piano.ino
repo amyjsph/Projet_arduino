@@ -66,7 +66,7 @@ void loop()
     
     if(capacitance[i] > 200) {
       if(!isHolding) {
-        mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00100 + (i+1));
+        mp3_command(CMD_PLAY_WITH_FOLDER, 0x0F00200 + (i+1));
       }
       a=true;
       break;

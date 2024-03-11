@@ -9,7 +9,7 @@
  */
 
 
-CapacitiveSensor   cs_4_2 = CapacitiveSensor(4,2);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin, add a wire and or foil if desired
+CapacitiveSensor   cs_4_2 = CapacitiveSensor(53, 49);
 
 void setup()                    
 {
@@ -19,14 +19,9 @@ void setup()
 
 void loop()                    
 {
-    long start = millis();
     long total1 =  cs_4_2.capacitiveSensor(30);
 
-    if(total1 > 1000) {
-      digitalWrite(8, HIGH);
-    } else {
-      digitalWrite(8, LOW);
-    }
+    Serial.println(total1);                  // print sensor output 1
 
-    delay(10);                             // arbitrary delay to limit data to serial port 
+    delay(100);                             // arbitrary delay to limit data to serial port 
 }
