@@ -36,7 +36,7 @@ void setup() {
 
   display.display();
 
-  for(int i = 5;i <= 7; i++) {
+  for(int i = 22;i <= 26; i+=2) {
     pinMode(i, INPUT);
   }
   
@@ -44,7 +44,7 @@ void setup() {
 
 void loop() {
   if(current_state == MAIN) {
-    for(int i = 5;i <= 7; i++) {
+    for(int i = 22;i <= 26; i+=2) {
       if(digitalRead(i)) {
         current_state = SELECT_MENU;
         display.clearDisplay();
@@ -68,9 +68,9 @@ void loop() {
       }
     }
   } else if(current_state == SELECT_MENU) {
-    for(int i = 5;i <= 7; i++) {
+    for(int i = 22;i <= 26; i+=2) {
       if(digitalRead(i)) {
-        instrument = i - 5;
+        instrument = i - 22;
         display.clearDisplay();
         
         display.setTextColor(SSD1306_WHITE);
@@ -82,9 +82,9 @@ void loop() {
         display.setCursor(0, 10);
         if(instrument == 0) {
           display.write("Clarinette");
-        } else if(instrument == 1) {
-          display.write("Trompette");
         } else if(instrument == 2) {
+          display.write("Trompette");
+        } else if(instrument == 4) {
           display.write("Piano");
         }
 
